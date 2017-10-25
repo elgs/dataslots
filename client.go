@@ -101,6 +101,7 @@ func (c *Client) writePump() {
 				return
 			}
 		case <-ticker.C:
+			// wait for pingPeriod time of inactivitity, then send a ping, disconnect if pong is not received within writeWait.
 			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if err := c.conn.WriteMessage(websocket.PingMessage, []byte{}); err != nil {
 				return
